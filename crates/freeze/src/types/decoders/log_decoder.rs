@@ -1,5 +1,5 @@
 use crate::{err, CollectError, ColumnEncoding, ToU256Series, U256Type};
-use ethers::prelude::*;
+use ethers::{prelude::*, utils::hex::ToHexExt};
 use ethers_core::abi::{AbiEncode, EventParam, HumanReadableParser, ParamType, RawLog, Token};
 use polars::prelude::*;
 use std::collections::HashSet;
@@ -96,7 +96,7 @@ impl LogDecoder {
                 },
                 Token::FixedBytes(b) => match column_encoding {
                     ColumnEncoding::Binary => bytes.push(b),
-                    ColumnEncoding::Hex => hexes.push(b.encode_hex()),
+                    ColumnEncoding::Hex => hexes.push(b.encode_hex_with_prefix()),
                 },
                 Token::Bytes(b) => match column_encoding {
                     ColumnEncoding::Binary => bytes.push(b),
